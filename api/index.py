@@ -33,8 +33,5 @@ def generate_audio():
     )
 
 # Untuk Vercel handler
-def handler(event, context):
-    from werkzeug.middleware.dispatcher import DispatcherMiddleware
-    from werkzeug.serving import run_simple
-    from flask import Response
+def handler(request, context):
     return app
