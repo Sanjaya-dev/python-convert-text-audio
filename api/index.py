@@ -1,12 +1,11 @@
 from flask import Flask, request, send_file
 from elevenlabs.client import ElevenLabs
 from io import BytesIO
+import vercel_wsgi
 
 app = Flask(__name__)
 
-elevenlabs = ElevenLabs(
-    api_key="sk_a6a556b179da933b9995bd93188ce4d3ecb729609cccf961"
-)
+elevenlabs = ElevenLabs(api_key="sk_a6a556b179da933b9995bd93188ce4d3ecb729609cccf961")
 
 @app.route("/generate-audio", methods=["POST"])
 def generate_audio():
@@ -28,10 +27,9 @@ def generate_audio():
 
     return send_file(
         audio_buffer,
-        download_name=file_name + ".mp3",
+        download_name=f"{file_name}.mp3",
         mimetype="audio/mpeg"
     )
 
-# Untuk Vercel handler
-def handler(request, context):
-    return app
+# Inilah handler yang dipakai oleh Vercel
+handler = vercel_wsgi.make_lambda_handler(app)
