@@ -30,5 +30,3 @@ def generate_audio():
         mimetype="audio/mpeg"
     )
 
-# Inilah handler yang dipakai oleh Vercel
-handler = vercel_wsgi.make_lambda_handler(app)
