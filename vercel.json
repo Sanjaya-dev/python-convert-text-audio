@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "builds": [{ "src": "api/index.py", "use": "@vercel/python" }],
+  "builds": [{ "src": "index.py", "use": "@vercel/python" }],
   "routes": [
     {
       "src": "/generate-audio",
       "methods": ["POST"],
-      "dest": "api/index.py"
+      "dest": "index.py"
     }
   ]
 }
