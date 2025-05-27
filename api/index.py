@@ -1,7 +1,6 @@
 from flask import Flask, request, send_file
 from elevenlabs.client import ElevenLabs
 from io import BytesIO
-import vercel_wsgi
 
 app = Flask(__name__)
 
