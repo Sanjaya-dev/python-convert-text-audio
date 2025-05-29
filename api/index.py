@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file
 from elevenlabs.client import ElevenLabs
-from elevenlabs import VoiceSettings
+from elevenlabs.client import VoiceSettings
 from io import BytesIO
 
 app = Flask(__name__)
