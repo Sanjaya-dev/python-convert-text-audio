@@ -14,9 +14,15 @@ def generate_audio():
 
     audio = elevenlabs.text_to_speech.convert(
         text=text,
-        voice_id="JBFqnCBsd6RMkjVDRZzb",
+        voice_id="XB0fDUnXU5powFXDhCwa",
         model_id="eleven_multilingual_v2",
         output_format="mp3_44100_128",
+        voice_settings=VoiceSettings(
+            stability=0.4,
+            similarity_boost=0,
+            use_speaker_boost=true,
+            speed=0.9
+        )
     )
 
     audio_buffer = BytesIO()
