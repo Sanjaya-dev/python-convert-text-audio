@@ -21,7 +21,7 @@ def generate_audio():
         voice_settings=VoiceSettings(
             stability=0.4,
             similarity_boost=0,
-            use_speaker_boost=true,
+            use_speaker_boost=True,
             speed=0.9
         )
     )
