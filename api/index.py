@@ -5,24 +5,28 @@ from io import BytesIO
 import zipfile
 import os
 import tempfile
+import requests
 
 app = Flask(__name__)
 elevenlabs = ElevenLabs(api_key="sk_a6a556b179da933b9995bd93188ce4d3ecb729609cccf961")
 
 @app.route("/generate-audio", methods=["POST"])
 def generate_audio():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
+    data = request.get_json()
+    zip_url = data.get("zip_url")
 
-    file = request.files['file']
+    if not zip_url:
+        return jsonify({"error": "zip_url not provided"}), 400
 
-    if not file.filename.endswith('.zip'):
-        return jsonify({"error": "Only .zip files are supported"}), 400
+    # Unduh file ZIP dari URL
+    response = requests.get(zip_url)
+    if response.status_code != 200:
+        return jsonify({"error": "Failed to download ZIP file"}), 400
 
-    # Buat direktori sementara untuk mengekstrak ZIP
     with tempfile.TemporaryDirectory() as tempdir:
         zip_path = os.path.join(tempdir, 'input.zip')
-        file.save(zip_path)
+        with open(zip_path, 'wb') as f:
+            f.write(response.content)
 
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(tempdir)
@@ -54,7 +58,7 @@ def generate_audio():
                     audio_buffer.seek(0)
                     output_audios.append((filename.replace(".txt", ".mp3"), audio_buffer.read()))
 
-        # Kemas semua audio ke dalam satu ZIP
+        # Kemas audio ke ZIP
         output_zip = BytesIO()
         with zipfile.ZipFile(output_zip, 'w') as zip_out:
             for audio_filename, audio_bytes in output_audios:
